@@ -24,8 +24,9 @@ class sublimeblastCommand(sublime_plugin.TextCommand):
 		subprocess.call(['/usr/local/bin/makeblastdb', '-dbtype', 'nucl', '-in', '%s' % db_handle])
 		## run blast, taking the query as what is input in the console
 		blast_output = subprocess.getoutput(['/usr/local/bin/blastn -db {0} -query {1} -outfmt 6'.format(db_handle, query_handle)])
-		## 
+		## add the headers and the blast output to the end of the window of focus
+		## self.view.size() is where you want to insert the text, in this case, at the end of the file so we use self.view.size() which is the total size
+		## edit is a token which classes the insert as a single edit which can e.g. be undone with one 'undo'
 		self.view.insert(edit, self.view.size(), 'qseqid	sseqid	pident	length	mismatch	gapopen	qstart	qend	sstart	send	evalue	bitscore')
 		self.view.insert(edit, self.view.size(), blast_output)
-		# self.setup_blast_db(edit)
 
